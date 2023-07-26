@@ -12,6 +12,9 @@ we leverage physics-based simulation to generate synthetic datasets and use a tr
 Applying our method, we find that we can reconstruct and localize lesions faithfully while allowing real-time reconstruction. We also demonstrate that the present algorithm can reconstruct multiple cancer lesions.
 The results demonstrate that multitask learning provides sharper and more accurate reconstruction.
 Both quantitative and qualitative results on phantom and real data indicate the superiority of our multitask method in the reconstruction and localization of lesions in tissue compared to state-of-the-art methods.
+![fig1_n](fig1_n.png)
+A Workflow example for DOT image reconstruction: Illumination, detection, and estimation of optical coefficients in tissue.
+Light propagation and scattering in the tissue are schematized. DOT reconstructed image shows the optical coefficients in the tissue. The success of diagnosis and treatment relies on accurate reconstruction and estimation of the optical properties of a medium.
 ## Keywords
 Diffuse optical tomography, image reconstruction, deep learning, tissue estimation, lesion localisation, multitask learning, transfer learning, handheld probe.
 ## Citation
