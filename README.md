@@ -10,7 +10,7 @@ Given the scarcity of real-world sensor-image pairs required for training superv
 we leverage physics-based simulation to generate synthetic datasets and use a transfer learning module to align the sensor domain distribution between in silico and real-world data, while taking advantage of cross-domain learning.
 Applying our method, we find that we can reconstruct and localize lesions faithfully while allowing real-time reconstruction. We also demonstrate that the present algorithm can reconstruct multiple cancer lesions.
 The results demonstrate that multitask learning provides sharper and more accurate reconstruction.
-![fig1_n](fig1_n.png)
+![fig1_n](Images/fig1_n.png)
 A Workflow example for DOT image reconstruction: Illumination, detection, and estimation of optical coefficients in tissue.
 Light propagation and scattering in the tissue are schematized. DOT reconstructed image shows the optical coefficients in the tissue. The success of diagnosis and treatment relies on accurate reconstruction and estimation of the optical properties of a medium.
 ## Keywords
