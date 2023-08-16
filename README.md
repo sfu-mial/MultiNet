@@ -10,6 +10,7 @@ Given the scarcity of real-world sensor-image pairs required for training superv
 we leverage physics-based simulation to generate synthetic datasets and use a transfer learning module to align the sensor domain distribution between in silico and real-world data, while taking advantage of cross-domain learning.
 Applying our method, we find that we can reconstruct and localize lesions faithfully while allowing real-time reconstruction. We also demonstrate that the present algorithm can reconstruct multiple cancer lesions.
 The results demonstrate that multitask learning provides sharper and more accurate reconstruction.
+
 ![Architecture](Images/Architecture.png)
 
 The overall architecture of the deep residual attention  model. (A) Transfer learning network used for data distribution adaptation between in silico measurements and real data collected from the probe. (B) The generation of in-silico training data pairs (ground truth image and their corresponding forward projection measurements) approximating our probe's specification. (C)
