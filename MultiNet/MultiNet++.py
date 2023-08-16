@@ -63,7 +63,7 @@ if not os.path.exists(final_directory):
 
 def initializer(name=None,logs={}):
         global lgr
-        configuration = {'epochs':25, 'lr':0.0001, 'seed':2, 'device':'gpu', 'orth': True, 'batchsize':16, 'alpha':0.0, 'beta':0.2, 'gamma':0.5, 
+        configuration = {'epochs':25, 'lr':0.0001, 'seed':2, 'device':'gpu', 'batchsize':64, 'alpha':0.0, 'beta':0.2,  
                   'checkpoint': None, 'datasetdirectory':'./data/data_samples/', 'outputfolder': "results", 'checkpointdirectory':'.', 'mode':'train'}
 
         
@@ -72,7 +72,6 @@ def initializer(name=None,logs={}):
         parser.add_argument('--batchsize', type=int, nargs='?', help='Int, >0, batchsize, default 16')
         parser.add_argument('--outputfolder', type=str, nargs='?', help='Output folder')
         parser.add_argument('--mode', type=str, nargs='?', help='train [def], test')
-        parser.add_argument('--orth', type=bool, nargs='?', help='Enable orthogonal loss: True [def] for FuseNet++, False for FuseNet')
         parser.add_argument('--datasetdirectory', type=str, nargs='?', help='Path where dataset is stored')
         parser.add_argument('--lr', type=float, nargs='?', help='Float, >0, Learning Rate, default 0.0001')
         # parser.add_argument('--checkpointdirectory', type=str, nargs='?', help='checkpoint directory to resume')
@@ -108,79 +107,40 @@ def initializer(name=None,logs={}):
         return configuration
 
 
-def train(epochs, batch_size, alpha,beta,gamma,orth,dir):
+def train(epochs, batch_size, alpha,beta,dir):
     alpha = K.variable(alpha)
     beta = K.variable(beta)
-    gamma = K.variable(gamma)
     shape = (256,)
     keras.callbacks.Callback()
     reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.000001, verbose=0, mode='auto') #ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.00001)
     change_lr = LearningRateScheduler(scheduler)
     filepath= dir+'/weights-improvement-{epoch:02d}.hdf5'
     checkpoint = ModelCheckpoint(filepath, verbose=1,  monitor='val_accuracy', save_weights_only=True, save_best_only=True, mode='max')
-    feature_cla, model = Models(shape).JRD_model()
-    model_loss_fuse= loss(alpha, beta,batch_size,feature_cla,gamma)
+    model = Models(shape).Recons_model_model()
     model_loss= loss_r(alpha, beta,batch_size) 
-    if orth: # arch== 'FuseNet++':
- 
-        model.compile(   
-            loss = 
-            {
-            "category_output":  model_loss_fuse,
-            "reconstruction_output1": model_loss,
-            "reconstruction_output2": model_loss,
-            "reconstruction_output3": model_loss,
-            "reconstruction_output4": model_loss,
-            "reconstruction_output_fuse": model_loss,
-            },
-            metrics = { "reconstruction_output_fuse":  ['accuracy',  'mse']},
-               
-            optimizer=tf.keras.optimizers.Adam(0.0001, beta_1=0.9, beta_2=0.98,
-                                     epsilon=1e-9)
-        )
-    else: #if arch== 'FuseNet':
-        feature_cla, model = Models(shape).JRD_model()
-        model_loss_fuse= loss(alpha, beta,batch_size,feature_cla,gamma)
-        model_loss= loss_r(alpha, beta,batch_size) 
-        model.compile(   
-            loss = 
-            {
-            "category_output": tf.keras.losses.CategoricalCrossentropy(),
-            "reconstruction_output1": model_loss,
-            "reconstruction_output2": model_loss,
-            "reconstruction_output3": model_loss,
-            "reconstruction_output4": model_loss,
-            "reconstruction_output_fuse": model_loss,
-            },
-            metrics = {"reconstruction_output_fuse": ['accuracy',  'mse']},
-            optimizer=tf.keras.optimizers.Adam(0.0001, beta_1=0.9, beta_2=0.98,
-                                     epsilon=1e-9)
-        )
+    
+    model = Models(shape).JRD_model()
+    model_loss= loss_r(alpha, beta,batch_size) 
+    model.compile(   
+        loss = 
+        {    
+        "reconstruction_output": model_loss,
+        },
+        metrics = {"reconstruction_output": ['mse']},
+        optimizer=tf.keras.optimizers.Adam(0.0001, beta_1=0.9, beta_2=0.98,
+                                    epsilon=1e-9)
+        
 
-    history =model.fit([measure_1, measure_2, measure_3, measure_4], [label,x_train, x_train, x_train, x_train, x_train], epochs=epochs, batch_size=batch_size, shuffle=True,
+    history =model.fit([measure_1], [x_train], epochs=epochs, batch_size=batch_size, shuffle=True,
     validation_split=0.1, callbacks = [plot_losses,checkpoint,LearningRateReducerCb(),reduce_lr])
-    Y_pred, Im_pred_1,Im_pred_2, Im_pred_3,Im_pred_4, Im_pred_f = model.predict([testmeasure_1, testmeasure_2, testmeasure_3, testmeasure_4])
-    y_pred = np.argmax(Y_pred, axis=1)
-    y_testlabel= np.argmax(label_test,1) 
+    Im_pred_1 = model.predict([testmeasure_1, testmeasure_2, testmeasure_3, testmeasure_4])
 
-    plot_generated_images(epochs, dir, Im_pred_1,Im_pred_2, Im_pred_3,Im_pred_4, Im_pred_f, x_test,label_test,True)
-    plot_confusionmatrix(epochs,dir, y_pred,y_testlabel)
+    plot_generated_images(epochs, dir, Im_pred_1, x_test, True)
 
-def test(testmeasure_1,testmeasure_2,testmeasure_3,testmeasure_4,x_test ,label_test, dir):
-    if orth: # arch== 'FuseNet++':
-        path=  '../weight/JRD++.h5'
-        # '/local-scratch/Hanene/DOT_model_2019/new/rnn/MFDL/new_fusion_orth/Best_results_GNnoise_mean_Std_fuse_orth/deep_spa_mse_only.h5'
-        RTRD_model= load_model(path,compile=False)#, custom_objects={'custom_loss_func': loss})
-        Y_pred, Im_pred_1,Im_pred_2, Im_pred_3,Im_pred_4, Im_pred_f = RTRD_model.predict([testmeasure_1[1:2,:], testmeasure_2[1:2,:], testmeasure_3[1:2,:],testmeasure_4[1:2,:]])
-
-
-    else: # if arch== 'FuseNet':
-        path= '../weight/JRD.h5'
-        RTRD_notorth_model= load_model(path,compile=False)#, custom_objects={'custom_loss_func': loss})
-        Y_pred, Im_pred_1,Im_pred_2, Im_pred_3,Im_pred_4, Im_pred_f = RTRD_notorth_model.predict([testmeasure_1[1:2,:], testmeasure_2[1:2,:], testmeasure_3[1:2,:],testmeasure_4[1:2,:]])
-    y_pred = np.argmax(Y_pred, axis=1)
-    y_true = np.argmax(label_test,1) 
-    print ("true vs predicted,", y_true[1:2], y_pred)
+def test(testmeasure_1,x_test, dir):
+    path=  '../weight/checkpoint.h5'
+    Rec_model= load_model(path,compile=False)
+    Im_pred= Rec_model.predict([testmeasure_1[1:2,:]])
     plot_generated_images(epochs, dir, Im_pred_1,Im_pred_2, Im_pred_3,Im_pred_4, Im_pred_f, x_test[1:2,:],label_test,False)
 
 
@@ -188,22 +148,20 @@ def test(testmeasure_1,testmeasure_2,testmeasure_3,testmeasure_4,x_test ,label_t
 
 if __name__ == "__main__":
     conf=initializer()
-    orth=conf['orth']
     batchsize= conf['batchsize']  
     lgr=conf['logger']
     alpha =conf['alpha']
     beta = conf['beta']
-    gamma = conf['gamma']
     epochs= conf['epochs'] 
     logging.captureWarnings(True)
     mode= conf['mode'] 
     dataset_dir = conf['datasetdirectory']
     outputfolder=  conf['outputfolder']
     if mode == 'train':
-        measure_1,measure_2,measure_3,measure_4, x_train, label, testmeasure_1,testmeasure_2,testmeasure_3,testmeasure_4,x_test ,label_test=load_data(dataset_dir)
-        train(epochs,batchsize, alpha,beta,gamma,orth,outputfolder)
+        measure_1,x_train, testmeasure_1,x_test =load_data(dataset_dir)
+        train(epochs,batchsize, alpha,beta,outputfolder)
     elif mode == 'test':
-        testmeasure_1, testmeasure_2, testmeasure_3, testmeasure_4, x_test ,label_test=load_data_t(dataset_dir)
-        test(testmeasure_1,testmeasure_2,testmeasure_3,testmeasure_4,x_test ,label_test,outputfolder)
+        testmeasure_1, x_test =load_data_t(dataset_dir)
+        test(testmeasure_1,x_test ,outputfolder)
 
 

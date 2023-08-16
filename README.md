@@ -13,7 +13,7 @@ The results demonstrate that multitask learning provides sharper and more accura
 
 ![Architecture](Images/Architecture.png)
 
-The overall architecture of the deep residual attention  model. (A) Transfer learning network used for data distribution adaptation between in silico measurements and real data collected from the probe. (B) The generation of in-silico training data pairs (ground truth image and their corresponding forward projection measurements) approximating our probe's specification. (C)
+The overall architecture of the deep residual attention model. (A) Transfer learning network used for data distribution adaptation between in silico measurements and real data collected from the probe. (B) The generation of in-silico training data pairs (ground truth image and their corresponding forward projection measurements) approximating our probe's specification. (C)
 Architecture of the proposed deep residual attention model. The squeeze and excitation block (inset) squeezes a given feature map along the channels and excites spatially.
 <!---A Workflow example for DOT image reconstruction: Illumination, detection, and estimation of optical coefficients in tissue.--->
 <!---Light propagation and scattering in the tissue are schematized. DOT reconstructed image shows the optical coefficients in the tissue. The success of diagnosis and treatment relies on accurate reconstruction and estimation of the optical properties of a medium.--->
