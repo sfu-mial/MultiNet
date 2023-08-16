@@ -149,12 +149,12 @@ def dst_transform(y_true, y_pred):
     return loss/ size
 
 
-def loss(alpha, Beta,batch_size):
+def loss_r(alpha, Beta,batch_size):
     def custom_loss_func_r(y_true, y_pred):
         return custom_loss_r(y_true, y_pred, alpha, Beta,batch_size)
     return custom_loss_func_r
 
-def custom_loss(y_true, y_pred, alpha, Beta,batch_size):  
+def custom_loss_r(y_true, y_pred, alpha, Beta,batch_size):  
     loss =losses.mean_squared_error(y_true, y_pred)
     loss+= alpha *FuzzyJaccard_distance_loss(y_true, y_pred)
     loss += Beta* dst_transform(y_true, y_pred)

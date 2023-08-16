@@ -76,8 +76,10 @@ def reconst_block(input, filters, initializers, shape):
     model = Conv2D(filters = 32, kernel_size = 3, strides = 1, padding = "same")(model)
     model = Activation('relu')(model) 
     ## Deep attention block ''' 
-    for index in range(4): #16
+    for index in range(2): #16
         model = res_block_gen(model, 3, 32, 1)
+    for index in range(2): #16
+        model = res_block_gen(model, 5, 32, 1)
     model= Conv2D(filters = 32, kernel_size = 7, strides = 1, padding = "same",kernel_regularizer=tf.keras.regularizers.L2(0.001))(model)
     model = Activation('relu')(model)
     return model

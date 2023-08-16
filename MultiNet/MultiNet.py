@@ -64,7 +64,7 @@ if not os.path.exists(final_directory):
 def initializer(name=None,logs={}):
         global lgr
         configuration = {'epochs':25, 'lr':0.0001, 'seed':2, 'device':'gpu', 'batchsize':64, 'alpha':0.0, 'beta':0.2,  
-                  'checkpoint': None, 'datasetdirectory':'./data/data_samples/', 'outputfolder': "results", 'checkpointdirectory':'.', 'mode':'train'}
+                  'checkpoint': None, 'datasetdirectory':'./data/data_samples/MS1/', 'outputfolder': "results", 'checkpointdirectory':'.', 'mode':'train'}
 
         
         parser = argparse.ArgumentParser(description='Optional app description')
@@ -116,24 +116,20 @@ def train(epochs, batch_size, alpha,beta,dir):
     change_lr = LearningRateScheduler(scheduler)
     filepath= dir+'/weights-improvement-{epoch:02d}.hdf5'
     checkpoint = ModelCheckpoint(filepath, verbose=1,  monitor='val_accuracy', save_weights_only=True, save_best_only=True, mode='max')
-    model = Models(shape).Recons_model_model()
-    model_loss= loss_r(alpha, beta,batch_size) 
-    
-    model = Models(shape).JRD_model()
+    model = Models(shape).Recons_model()
     model_loss= loss_r(alpha, beta,batch_size) 
     model.compile(   
         loss = 
         {    
-        "reconstruction_output": model_loss,
+        "reconstruction_output1": model_loss,
         },
-        metrics = {"reconstruction_output": ['mse']},
+        metrics = {"reconstruction_output1": ['mse']},
         optimizer=tf.keras.optimizers.Adam(0.0001, beta_1=0.9, beta_2=0.98,
                                     epsilon=1e-9)
-        
-
-    history =model.fit([measure_1], [x_train], epochs=epochs, batch_size=batch_size, shuffle=True,
+    )
+    history =model.fit(measure_1, x_train, epochs=epochs, batch_size=batch_size, shuffle=True,
     validation_split=0.1, callbacks = [plot_losses,checkpoint,LearningRateReducerCb(),reduce_lr])
-    Im_pred_1 = model.predict([testmeasure_1, testmeasure_2, testmeasure_3, testmeasure_4])
+    Im_pred_1 = model.predict(testmeasure_1)
 
     plot_generated_images(epochs, dir, Im_pred_1, x_test, True)
 
@@ -141,7 +137,7 @@ def test(testmeasure_1,x_test, dir):
     path=  '../weight/checkpoint.h5'
     Rec_model= load_model(path,compile=False)
     Im_pred= Rec_model.predict([testmeasure_1[1:2,:]])
-    plot_generated_images(epochs, dir, Im_pred_1,Im_pred_2, Im_pred_3,Im_pred_4, Im_pred_f, x_test[1:2,:],label_test,False)
+    plot_generated_images(epochs, dir, Im_pred_1, x_test[1:2,:],label_test,False)
 
 
 

@@ -27,13 +27,13 @@ class Models(object):
 	    normal=keras.initializers.he_normal(seed=None)
 
         ### Add noise 
-	    input0 = keras.Input(shape = self.input_shape, name="vec1")
+	    input0 = keras.Input(shape = self.input_shape)
 	    input0_n = GaussianNoise(0.1)(input0)
 
 	    model1 = reconst_block(input0_n , 32, initializers=normal, shape= target_shape)
-	    out_r1 = Conv2D(filters = 1, kernel_size = 7, strides = 1,kernel_initializer='glorot_normal', padding = "same", name="reconstruction_output1")(model1)
+	    out_r = Conv2D(filters = 1, kernel_size = 7, strides = 1,kernel_initializer='glorot_normal', padding = "same", name="reconstruction_output1")(model1)
 
-	    generator_model = Model(inputs = [input],  outputs = [out_r])
+	    generator_model = Model(inputs = input0,  outputs = out_r)
 	    generator_model.summary([])
 	    return generator_model
 
