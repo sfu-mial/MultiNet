@@ -42,7 +42,7 @@ from sklearn.preprocessing import label_binarize
 global Tmp_ssimlist
 Tmp_ssimlist = 0
 
-def plot_generated_images(epoch, dir,generated_image_1 , x_train, GT_label,val =True, examples=120, dim=(1, 2), figsize=(10, 5)):
+def plot_generated_images(epoch, dir,generated_image_1,x_train,val =True, examples=120, dim=(1, 2), figsize=(10, 5)):
     fg_color = 'black'
     bg_color =  'white'
     DistanceROI = []
@@ -84,48 +84,7 @@ def plot_generated_images(epoch, dir,generated_image_1 , x_train, GT_label,val =
             ax2.axis('off')
             fig.colorbar(im2, cax=cax, orientation='vertical')
 
-            ## plot Rec2
-            ax3=plt.subplot(dim[0], dim[1], 3)
-            imgnr = np.flipud(generated_image_2[index])/scale 
-            ax3.set_title('Recons_f2', color=fg_color)
-            im2=plt.imshow(imgnr.reshape(128, 128))
-            divider = make_axes_locatable(ax3)
-            cax = divider.append_axes('right', size='5%', pad=0.05)
-            ax3.axis('off')
-            fig.colorbar(im2, cax=cax, orientation='vertical')
-
-            ## plot Rec3
-            ax4=plt.subplot(dim[0], dim[1], 4)
-            imgnr = np.flipud(generated_image_3[index])/scale 
-            ax4.set_title('Recons_f3', color=fg_color)
-            im2=plt.imshow(imgnr.reshape(128, 128))
-            divider = make_axes_locatable(ax4)
-            cax = divider.append_axes('right', size='5%', pad=0.05)
-            ax4.axis('off')
-            fig.colorbar(im2, cax=cax, orientation='vertical')
-
-            ## plot Rec4
-            ax5=plt.subplot(dim[0], dim[1], 5)
-            imgnr = np.flipud(generated_image_4[index])/scale 
-            ax5.set_title('Recons_f4', color=fg_color)
-            im2=plt.imshow(imgnr.reshape(128, 128))
-            divider = make_axes_locatable(ax5)
-            cax = divider.append_axes('right', size='5%', pad=0.05)
-            ax5.axis('off')
-            fig.colorbar(im2, cax=cax, orientation='vertical')
-
-            ## plot Rec_fusion
-            ax6=plt.subplot(dim[0], dim[1], 6)
-            imgnr = np.flipud(generated_image_f[index])/scale 
-            ax6.set_title('Recons_all', color=fg_color)
-            im2=plt.imshow(imgnr.reshape(128, 128))
-            divider = make_axes_locatable(ax6)
-            cax = divider.append_axes('right', size='5%', pad=0.05)
-            ax6.axis('off')
-            fig.colorbar(im2, cax=cax, orientation='vertical')
-            plt.tight_layout(pad=0.01)
-            plt.savefig(dirfile+ '-' +str(index)+'.png' )
-                
+            
             ## compute metrics
             v=calculateDistance (generated_image_f[index],x_train[index])#
             DistanceROI.append(v)
