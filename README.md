@@ -89,7 +89,7 @@ This will show something like:
 [FuseNet++.py:104 -          initializer() ] CONF::		 outputdirectory -> /dev/shm/MultiNet/MultiNet/../myoutput
 ...
 Epoch 1/100
-  16/1939 [..............................] - ETA: 34:23 - loss: 1.4238
+  16/4539 [..............................] - ETA: 34:23 - loss: 1.4238
 ```
 
 This will train the network and save output in `myoutput`.
