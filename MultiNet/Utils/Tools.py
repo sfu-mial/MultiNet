@@ -35,64 +35,32 @@ class PlotLosses(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
         self.i = 0
         self.x = []
-        self.losses_task = []
-        self.val_losses_task = []
-        self.losses_recons = []
-        self.val_losses_recons = []
-        self.acc = []
-        self.val_acc = []
+        self.losses = []
+        self.val_losses = []
+
         self.fig = plt.figure()
+
         self.logs = []
 
     def on_epoch_end(self, epoch, logs={}):
         self.logs.append(logs)
         self.x.append(self.i)
-        self.losses_recons.append(logs.get('reconstruction_output_fuse_loss'))
-        self.val_losses_recons.append(logs.get('val_reconstruction_output_fuse_loss'))
-        self.losses_task.append(logs.get('category_output_loss'))
-        self.val_losses_task.append(logs.get('val_category_output_loss'))
-        self.acc.append(logs.get('category_output_accuracy'))
-        self.val_acc.append(logs.get('val_category_output_accuracy'))
+        self.losses.append(logs.get('loss'))
+        self.val_losses.append(logs.get('val_loss'))
         self.i += 1
-        
-        # clear_output(wait=True)
-        plt.plot(self.x, self.losses_task, label="loss")
-        plt.plot(self.x, self.val_losses_task, label="val_loss")
-        axes = plt.gca()
-        # axes.set_ylim([0,1])
-        plt.legend()
-        # plt.show();
-        plt.title('model_task_loss')
-        # plt.yscale('log')
-        plt.ylabel('loss')
-        plt.xlabel('epoch')
-        plt.savefig("results/model_task_loss.png", bbox_inches='tight')
-        plt.close("all")
 
         # clear_output(wait=True)
-        plt.plot(self.x, self.losses_recons, label="losses_recons")
-        plt.plot(self.x, self.val_losses_recons, label="val_losses_recons")
+        plt.plot(self.x, self.losses, label="loss")
+        plt.plot(self.x, self.val_losses, label="val_loss")
         axes = plt.gca()
         # axes.set_ylim([0,1])
         plt.legend()
         # plt.show();
-        plt.title('model_reconst_loss')
+        plt.title('model loss')
         # plt.yscale('log')
         plt.ylabel('loss')
         plt.xlabel('epoch')
-        plt.savefig("results/model_recons_loss.png", bbox_inches='tight')
-        plt.close("all")
-        plt.plot(self.x, self.acc, label="category_output_acc")
-        plt.plot(self.x, self.val_acc, label="val_category_output_acc")
-        axes = plt.gca()
-        # axes.set_ylim([0,1])
-        plt.legend()
-        # plt.show();
-        plt.title('model accuracy')
-        # plt.yscale('log')
-        plt.ylabel('accuracy')
-        plt.xlabel('epoch')
-        plt.savefig("results/model accuracy.png", bbox_inches='tight')
+        plt.savefig("results/modelloss.png", bbox_inches='tight')
         plt.close("all")
 
 plot_losses = PlotLosses()
@@ -103,13 +71,15 @@ class MyCallback(keras.callbacks.Callback):
         self.beta = beta
     # customize your behavior
     def on_epoch_end(self, epoch, logs={}):
-        if epoch >100 and K.get_value(self.beta)<=0.1:
+        if epoch >10 and K.get_value(self.alpha)<0.4:
+            # K.set_value(self.alpha, 0.4)
             # K.set_value(self.beta, K.get_value(self.beta) +0.0001)
-            if  K.get_value(self.alpha)<0.3:
+#             if  K.get_value(self.alpha)<1: #was 0.3
                  K.set_value(self.alpha, K.get_value(self.alpha) +0.001)
-#            K.set_value(self.alpha, max(0.75, K.get_value(self.alpha) -0.0001))
-#                  K.set_value(self.beta,  min(0.7, K.get_value(self.beta) -0.0001))
+# #            K.set_value(self.alpha, max(0.75, K.get_value(self.alpha) -0.0001))
+# #                  K.set_value(self.beta,  min(0.7, K.get_value(self.beta) -0.0001))
         logger.info("epoch %s, alpha = %s, beta = %s" % (epoch, K.get_value(self.alpha), K.get_value(self.beta)))
+
 
 class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
   def __init__(self, d_model, warmup_steps=30):

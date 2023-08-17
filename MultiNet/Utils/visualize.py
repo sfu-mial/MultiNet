@@ -42,7 +42,7 @@ from sklearn.preprocessing import label_binarize
 global Tmp_ssimlist
 Tmp_ssimlist = 0
 
-def plot_generated_images(epoch, dir,generated_image_1,x_train,val =True, examples=120, dim=(1, 2), figsize=(10, 5)):
+def plot_generated_images(epoch, dir,generated_image,x_train,val =True, examples=120, dim=(1, 2), figsize=(10, 5)):
     fg_color = 'black'
     bg_color =  'white'
     DistanceROI = []
@@ -76,7 +76,7 @@ def plot_generated_images(epoch, dir,generated_image_1,x_train,val =True, exampl
 
             ## plot Rec1
             ax2=plt.subplot(dim[0], dim[1], 2)
-            imgnr = np.flipud(generated_image_1[index])/scale 
+            imgnr = np.flipud(generated_image[index])/scale 
             ax2.set_title('Recons_f1', color=fg_color)
             im2=plt.imshow(imgnr.reshape(128, 128))
             divider = make_axes_locatable(ax2)
@@ -86,13 +86,13 @@ def plot_generated_images(epoch, dir,generated_image_1,x_train,val =True, exampl
 
             
             ## compute metrics
-            v=calculateDistance (generated_image_f[index],x_train[index])#
+            v=calculateDistance (generated_image[index],x_train[index])#
             DistanceROI.append(v)
-            p=psnr(generated_image_f[index],x_train[index])
+            p=psnr(generated_image[index],x_train[index])
             psnrlist.append(p)
-            ss_im = ssim(x_train[index].reshape(128, 128), generated_image_f[index].reshape(128, 128))
+            ss_im = ssim(x_train[index].reshape(128, 128), generated_image[index].reshape(128, 128))
             ssimlist.append(ss_im)
-            fjacc= FuzzyJaccard(x_train[index],generated_image_f[index])
+            fjacc= FuzzyJaccard(x_train[index],generated_image[index])
             FJaccard.append(fjacc)
             plt.close("all")
  
