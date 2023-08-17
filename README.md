@@ -79,27 +79,24 @@ This will show something like:
 [FuseNet++.py:104 -          initializer() ] CONF::		 lr -> 0.0001
 [FuseNet++.py:104 -          initializer() ] CONF::		 seed -> 2
 [FuseNet++.py:104 -          initializer() ] CONF::		 device -> gpu
-[FuseNet++.py:104 -          initializer() ] CONF::		 orth -> True
-[FuseNet++.py:104 -          initializer() ] CONF::		 batchsize -> 16
+[FuseNet++.py:104 -          initializer() ] CONF::		 batchsize -> 64
 [FuseNet++.py:104 -          initializer() ] CONF::		 beta -> 0.2
-[FuseNet++.py:104 -          initializer() ] CONF::		 gamma -> 0.5
 [FuseNet++.py:104 -          initializer() ] CONF::		 checkpoint -> None
 [FuseNet++.py:104 -          initializer() ] CONF::		 datasetdirectory -> ./data/data_samples/
-[FuseNet++.py:104 -          initializer() ] CONF::		 outputfolder -> ../myoutput
+[FuseNet++.py:104 -          initializer() ] CONF::		 outputfolder -> ../resu
 [FuseNet++.py:104 -          initializer() ] CONF::		 checkpointdirectory -> .
 [FuseNet++.py:104 -          initializer() ] CONF::		 mode -> train
 [FuseNet++.py:104 -          initializer() ] CONF::		 outputdirectory -> /dev/shm/MultiNet/MultiNet/../myoutput
-[FuseNet++.py:104 -          initializer() ] CONF::		 logdir -> /dev/shm/MultiNet/MultiNet/../myoutput
 ...
 Epoch 1/100
-  16/1939 [..............................] - ETA: 34:23 - loss: 19.4238
+  16/1939 [..............................] - ETA: 34:23 - loss: 1.4238
 ```
 
 This will train the network and save output in `myoutput`.
 Examples of outputs are presented in [Figures](MultiNet/Figures) 
 <!--![images/reconst](MultiNet/Images/test_generated_image-19.png?=100x100)-->
 #### Evaluation
-For evaluation, put all your test measurments in a folder and set it path as an argument.Examples are available under [data_samples](MultiNet/data). Then run the following command:
+For evaluation, put all your test measurments in a folder and set it path as an argument. Examples are available under [data_samples](MultiNet/data). Then run the following command:
 
 <a name="Evaluation"></a>
 ```bash
