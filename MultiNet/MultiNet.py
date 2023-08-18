@@ -137,7 +137,7 @@ def test(testmeasure_1,x_test, dir):
     path=  './Output/checkpoint.h5'
     Rec_model= load_model(path,compile=False)
     Im_pred= Rec_model.predict([testmeasure_1[1:2,:]])
-    plot_generated_images(dir, Im_pred_1, x_test[1:2,:],label_test,False)
+    plot_generated_images(dir, Im_pred, x_test[1:2,:],False)
 
 
 

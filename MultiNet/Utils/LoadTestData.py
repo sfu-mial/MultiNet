@@ -26,91 +26,43 @@ def load_data_t(direc):
      # direc= '/local-scratch/Hanene/Data/multi-freq/Data/'
      print (direc)
      #TESTNSET
-     train_dirc='testset'
+     train_dirc1='new_NG_2_2_manysize'
+#TESTNSET
      #path load GT image
-     path1 = direc+train_dirc+'/'+'benign/absmat' 
+     path1 = direc+train_dirc1+'/'+'testData/absmat' 
      immatrix1= loadimage(path1)
 
-     path2 =   direc+train_dirc+'/'+'malignant/absmat' 
-     immatrix2= loadimage(path2)
-
-     immatrix_test= 100*np.concatenate((immatrix1,immatrix2), axis=0)
+     # path2 =   direc+train_dirc2+'/'+'testData/absmat' 
+     # immatrix2= loadimage(path2)
+     immatrix_test=  100*immatrix1
+     # immatrix_test= 100*np.concatenate((immatrix1,immatrix2), axis=0)
    
-
-     #path load  image label
-     path1 = direc+train_dirc+'/'+'benign/label'
-     test_label1= loadmeasure(path1)
-
-     path2 =   direc+train_dirc+'/'+'malignant/label' 
-     test_label2= loadmeasure(path2)
-
-     label_test= np.concatenate((test_label1,test_label2), axis=0)
-
      #750 measure
-     path1 = direc+train_dirc+'/'+'benign/750/csv'
+     path1 = direc+train_dirc1+'/'+'testData/csv'
      measure1=loadmeasure(path1)
-     path1 = direc+train_dirc+'/'+'malignant/750/csv'
-     measure2=loadmeasure(path1)
-     testmeasure_750= np.concatenate((measure1,measure2), axis=0)   
+     # path1 = direc+train_dirc+'/'+'testData/csv'
+     # measure2=loadmeasure(path1)
+     # testmeasure_750= np.concatenate((measure1,measure2), axis=0)   
+     testmeasure_750=measure1
 
-     #690 measure
-     path1 = direc+train_dirc+'/'+'benign/690/csv'
-     measure1=loadmeasure(path1)
-     path1 = direc+train_dirc+'/'+'malignant/690/csv'
-     measure2=loadmeasure(path1)
-     testmeasure_690= np.concatenate((measure1,measure2), axis=0)   
+     X_test_750,y_test =(testmeasure_750,immatrix_test) 
 
-     #800 measure
-     path1 = direc+train_dirc+'/'+'benign/800/csv'
-     measure1=loadmeasure(path1)
-     path1 = direc+train_dirc+'/'+'malignant/800/csv'
-     measure2=loadmeasure(path1)
-     testmeasure_800= np.concatenate((measure1,measure2), axis=0) 
-
-     #850 measure
-     path1 = direc+train_dirc+'/'+'benign/850/csv'
-     measure1=loadmeasure(path1)
-     path1 = direc+train_dirc+'/'+'malignant/850/csv'
-     measure2=loadmeasure(path1)
-     testmeasure_850=  np.concatenate((measure1,measure2), axis=0) 
-
-     label_test=np.where((label_test)==2, 1, label_test)
-
-     label_test=np.where((label_test)==3, 2, label_test)
-
-
-     X_test_690,X_test_750,X_test_800,X_test_850,y_test,Y_testlabel =(testmeasure_690,testmeasure_750,testmeasure_800,
-     testmeasure_850,immatrix_test ,label_test) 
-
-     return preprocess_t(X_test_690,X_test_750,X_test_800,X_test_850,y_test,Y_testlabel)
+     return preprocess_t(X_test_750,y_test)
 
 
 
-def preprocess_t(X_test_690,X_test_750,X_test_800,X_test_850,y_test,Y_testlabel):
+def preprocess_t(X_test_750,y_test):
  
      # y_train= immatrix
-     x_test_2= X_test_690
      x_test_1= X_test_750
-     x_test_3= X_test_800
-     x_test_4= X_test_850
-     # x_train= measure_750
-
-     y_testlabel=Y_testlabel
      y_testima= y_test
 
      # normalize data
-     x_test_1 = normalize_data(X_test_690) 
 
      x_test_2= normalize_data(X_test_750) 
-
-     x_test_3 = normalize_data(X_test_800) 
-
-     x_test_4= normalize_data(X_test_850) 
+     y_testima=y_testima/.25
 
      y_test = np.reshape(y_testima, (len(y_testima), 128, 128,1))  #
 
-     y_testlabel=label_binarize(Y_testlabel, classes=[0, 1, 2])
 
-
-
-     return x_test_1, x_test_2, x_test_3, x_test_4, y_test, y_testlabel
+     return  x_test_2, y_test
