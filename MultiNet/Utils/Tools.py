@@ -112,6 +112,8 @@ class LearningRateReducerCb(tf.keras.callbacks.Callback):
     PlotLosses()
     if epoch == 5 or (epoch >= 10 and epoch % 10 == 0):
         self.model.save('./Output/checkpoint.h5')
+        plot_generated_images(epochs, dir, Im_pred_1, x_test, True)
+
 
 
 class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
