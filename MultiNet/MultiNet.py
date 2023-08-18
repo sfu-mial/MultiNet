@@ -128,7 +128,7 @@ def train(epochs, batch_size, alpha,beta,dir):
                                     epsilon=1e-9)
     )
     history =model.fit(measure_1, x_train, epochs=epochs, batch_size=batch_size, shuffle=True,
-    validation_split=0.1, callbacks = [plot_losses,checkpoint,LearningRateReducerCb(),reduce_lr])
+    validation_split=0.2, callbacks = [plot_losses,checkpoint,LearningRateReducerCb(),reduce_lr])
     Im_pred_1 = model.predict(testmeasure_1)
 
     plot_generated_images(dir, Im_pred_1, x_test, True)

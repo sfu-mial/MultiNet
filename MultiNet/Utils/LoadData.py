@@ -91,7 +91,7 @@ def load_data(direc):
      testmeasure_750=measure1
      
 
-     # measure_750, immatrix= augmentdata(measure_750,immatrix)
+     measure_750, immatrix= augmentdata(measure_750,immatrix)
 
      X_train_750, y_train = shuffle(measure_750, immatrix, random_state=2) 
 
