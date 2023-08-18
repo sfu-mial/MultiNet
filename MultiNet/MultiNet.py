@@ -57,13 +57,13 @@ from numpy.random import seed
 
 
 current_directory = os.getcwd()
-final_directory = os.path.join(current_directory, 'results')
+final_directory = os.path.join(current_directory, 'Loss')
 if not os.path.exists(final_directory):
    os.makedirs(final_directory)
 
 def initializer(name=None,logs={}):
         global lgr
-        configuration = {'epochs':25, 'lr':0.0001, 'seed':2, 'device':'gpu', 'batchsize':64, 'alpha':0.0, 'beta':0.2,  
+        configuration = {'epochs':25, 'lr':0.0001, 'seed':2, 'device':'gpu', 'batchsize':64, 'alpha':0.1, 'beta':0.2,  
                   'checkpoint': None, 'datasetdirectory':'./data/data_samples/MS1/', 'outputfolder': "results", 'checkpointdirectory':'.', 'mode':'train'}
 
         
@@ -114,7 +114,7 @@ def train(epochs, batch_size, alpha,beta,dir):
     keras.callbacks.Callback()
     reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.000001, verbose=0, mode='auto') #ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.00001)
     change_lr = LearningRateScheduler(scheduler)
-    filepath= dir+'/weights-improvement-{epoch:02d}.hdf5'
+    filepath= dir+'/weight/checkpoint-{epoch:02d}.hdf5'
     checkpoint = ModelCheckpoint(filepath, verbose=1,  monitor='val_accuracy', save_weights_only=True, save_best_only=True, mode='max')
     model = Models(shape).Recons_model()
     model_loss= loss_r(alpha, beta,batch_size) 
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     logging.captureWarnings(True)
     mode= conf['mode'] 
     dataset_dir = conf['datasetdirectory']
-    outputfolder=  conf['outputfolder']
+    outputfolder=  conf['outputdirectory']
     if mode == 'train':
         measure_1,x_train, testmeasure_1,x_test =load_data(dataset_dir)
         train(epochs,batchsize, alpha,beta,outputfolder)

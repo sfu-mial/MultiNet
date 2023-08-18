@@ -42,7 +42,7 @@ from sklearn.preprocessing import label_binarize
 global Tmp_ssimlist
 Tmp_ssimlist = 0
 
-def plot_generated_images(epoch, dir,generated_image,x_train,val =True, examples=120, dim=(1, 2), figsize=(10, 5)):
+def plot_generated_images(epoch, dir,generated_image,x_train,val =True, examples=5, dim=(1, 2), figsize=(10, 5)):
     fg_color = 'black'
     bg_color =  'white'
     DistanceROI = []
@@ -84,6 +84,8 @@ def plot_generated_images(epoch, dir,generated_image,x_train,val =True, examples
             ax2.axis('off')
             fig.colorbar(im2, cax=cax, orientation='vertical')
 
+            plt.tight_layout()
+            plt.savefig(dirfile+ '-' +str(index)+'.png' )
             
             ## compute metrics
             v=calculateDistance (generated_image[index],x_train[index])#

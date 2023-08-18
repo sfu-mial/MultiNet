@@ -16,7 +16,7 @@ def initlogger(configuration):
     if lgr is None:
         lgr = logging.getLogger('global')
     if 'logdir' in configuration:
-        fh = logging.FileHandler(os.path.join(configuration['logdir'], 'FuseNet.log'))
+        fh = logging.FileHandler(os.path.join(configuration['logdir'], 'MultiNet.log'))
         fh.setLevel(logging.INFO)
         formatter = logging.Formatter("[%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s")
         fh.setFormatter(formatter)
@@ -60,7 +60,7 @@ class PlotLosses(keras.callbacks.Callback):
         # plt.yscale('log')
         plt.ylabel('loss')
         plt.xlabel('epoch')
-        plt.savefig("results/modelloss.png", bbox_inches='tight')
+        plt.savefig("Loss/modelloss.png", bbox_inches='tight')
         plt.close("all")
 
 plot_losses = PlotLosses()
