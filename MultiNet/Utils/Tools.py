@@ -60,7 +60,7 @@ class PlotLosses(keras.callbacks.Callback):
         # plt.yscale('log')
         plt.ylabel('loss')
         plt.xlabel('epoch')
-        plt.savefig("Loss/modelloss.png", bbox_inches='tight')
+        plt.savefig("Output/modelloss.png", bbox_inches='tight')
         plt.close("all")
 
 plot_losses = PlotLosses()
@@ -111,7 +111,7 @@ class LearningRateReducerCb(tf.keras.callbacks.Callback):
 
     PlotLosses()
     if epoch == 5 or (epoch >= 10 and epoch % 10 == 0):
-        self.model.save('./results/deep_spa_mse_only.h5')
+        self.model.save('./Output/checkpoint.h5')
 
 
 class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):

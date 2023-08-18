@@ -57,7 +57,7 @@ from numpy.random import seed
 
 
 current_directory = os.getcwd()
-final_directory = os.path.join(current_directory, 'Loss')
+final_directory = os.path.join(current_directory, 'Output')
 if not os.path.exists(final_directory):
    os.makedirs(final_directory)
 
@@ -114,7 +114,7 @@ def train(epochs, batch_size, alpha,beta,dir):
     keras.callbacks.Callback()
     reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.000001, verbose=0, mode='auto') #ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.00001)
     change_lr = LearningRateScheduler(scheduler)
-    filepath= dir+'/weight/checkpoint-{epoch:02d}.hdf5'
+    filepath= dir+'/Output/checkpoint-{epoch:02d}.hdf5'
     checkpoint = ModelCheckpoint(filepath, verbose=1,  monitor='val_accuracy', save_weights_only=True, save_best_only=True, mode='max')
     model = Models(shape).Recons_model()
     model_loss= loss_r(alpha, beta,batch_size) 
@@ -134,7 +134,7 @@ def train(epochs, batch_size, alpha,beta,dir):
     plot_generated_images(epochs, dir, Im_pred_1, x_test, True)
 
 def test(testmeasure_1,x_test, dir):
-    path=  '../weight/checkpoint.h5'
+    path=  './Output/checkpoint.h5'
     Rec_model= load_model(path,compile=False)
     Im_pred= Rec_model.predict([testmeasure_1[1:2,:]])
     plot_generated_images(epochs, dir, Im_pred_1, x_test[1:2,:],label_test,False)
