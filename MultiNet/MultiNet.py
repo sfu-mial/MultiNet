@@ -63,7 +63,7 @@ if not os.path.exists(final_directory):
 
 def initializer(name=None,logs={}):
         global lgr
-        configuration = {'epochs':25, 'lr':0.0001, 'seed':2, 'device':'gpu', 'batchsize':64, 'alpha':0.1, 'beta':0.2,  
+        configuration = {'epochs':25, 'lr':0.001, 'seed':2, 'device':'gpu', 'batchsize':64, 'alpha':0.1, 'beta':0.1,  
                   'checkpoint': None, 'datasetdirectory':'./data/data_samples/MS1/', 'outputfolder': "results", 'checkpointdirectory':'.', 'mode':'train'}
 
         
@@ -112,7 +112,7 @@ def train(epochs, batch_size, alpha,beta,dir):
     beta = K.variable(beta)
     shape = (256,)
     keras.callbacks.Callback()
-    reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.000001, verbose=0, mode='auto') #ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.00001)
+    reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr=0.000001, verbose=0, mode='auto') #ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=0.00001)
     change_lr = LearningRateScheduler(scheduler)
     filepath= dir+'/Output/checkpoint-{epoch:02d}.hdf5'
     checkpoint = ModelCheckpoint(filepath, verbose=1,  monitor='val_accuracy', save_weights_only=True, save_best_only=True, mode='max')
@@ -131,13 +131,13 @@ def train(epochs, batch_size, alpha,beta,dir):
     validation_split=0.1, callbacks = [plot_losses,checkpoint,LearningRateReducerCb(),reduce_lr])
     Im_pred_1 = model.predict(testmeasure_1)
 
-    plot_generated_images(epochs, dir, Im_pred_1, x_test, True)
+    plot_generated_images(dir, Im_pred_1, x_test, True)
 
 def test(testmeasure_1,x_test, dir):
     path=  './Output/checkpoint.h5'
     Rec_model= load_model(path,compile=False)
     Im_pred= Rec_model.predict([testmeasure_1[1:2,:]])
-    plot_generated_images(epochs, dir, Im_pred_1, x_test[1:2,:],label_test,False)
+    plot_generated_images(dir, Im_pred_1, x_test[1:2,:],label_test,False)
 
 
 

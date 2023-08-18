@@ -42,7 +42,7 @@ from sklearn.preprocessing import label_binarize
 global Tmp_ssimlist
 Tmp_ssimlist = 0
 
-def plot_generated_images(epoch, dir,generated_image,x_train,val =True, examples=5, dim=(1, 2), figsize=(10, 5)):
+def plot_generated_images(dir,generated_image,x_train,val =True, examples=15, dim=(1, 2), figsize=(10, 5)):
     fg_color = 'black'
     bg_color =  'white'
     DistanceROI = []
@@ -53,7 +53,7 @@ def plot_generated_images(epoch, dir,generated_image,x_train,val =True, examples
     FJaccard=[]
     vmin=0
     vmax=25
-    scale = np.array(100)  
+    scale = np.array(100/25)  
     # PD_label=[]
     # GT_label=[]
     global Tmp_ssimlist

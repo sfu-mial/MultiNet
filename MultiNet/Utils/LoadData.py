@@ -89,7 +89,8 @@ def preprocess(X_train_750,y_train,X_test_750,y_test):
      # normalize data
      x_train_2= normalize_data (X_train_750) 
      x_test_2= normalize_data(X_test_750)
-
+     y_trainima= y_trainima/.25
+     y_testima=y_testima/.25
      y_train = np.reshape(y_trainima, (len(y_trainima), 128, 128,1))  
      y_test = np.reshape(y_testima, (len(y_testima), 128, 128,1))  
 

@@ -7,6 +7,7 @@ from keras.callbacks import LearningRateScheduler
 import matplotlib
 import matplotlib.pyplot as plt
 from Utils.Utils_models import *
+from Utils.visualize import *
 
 matplotlib.use('Agg')
 lgr = None
@@ -112,7 +113,7 @@ class LearningRateReducerCb(tf.keras.callbacks.Callback):
     PlotLosses()
     if epoch == 5 or (epoch >= 10 and epoch % 10 == 0):
         self.model.save('./Output/checkpoint.h5')
-        plot_generated_images(epochs, dir, Im_pred_1, x_test, True)
+        # plot_generated_images(dir, Im_pred_1, x_test, True)
 
 
 
