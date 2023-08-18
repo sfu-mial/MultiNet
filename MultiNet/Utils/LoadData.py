@@ -33,24 +33,44 @@ def load_data(direc):
 
      train_dirc1='new_NG_2_2_manysize'
      train_dirc2='new_NG_2_2_manysize_128LED_Many_lesion'
+     train_dirc3='new_smallblobs_only_many'
+     train_dirc4='new_one_blobs'
 
      path1 = direc+train_dirc1+'/'+'750/absmat' 
-     immatrix3= loadimage(path1)
+     immatrix1= loadimage(path1)
 
      path2 =   direc+train_dirc2+'/'+'750/absmat'  
-     immatrix4= loadimage(path2)
-     immatrix= 100*np.concatenate((immatrix3,immatrix4), axis=0)
+     immatrix2= loadimage(path2)
+
+     path3 =   direc+train_dirc3+'/'+'750/absmat'  
+     immatrix3= loadimage(path3)
+
+     path4 =   direc+train_dirc4+'/'+'750/absmat'  
+     immatrix4= loadimage(path4)
+     
+     immatrix= np.concatenate((immatrix1,immatrix2), axis=0)
+     immatrix= np.concatenate((immatrix,immatrix3), axis=0)
+     immatrix= 100*np.concatenate((immatrix,immatrix4), axis=0)
 
 
 
 
-     path3 =  direc+train_dirc1+'/'+'750/csv'  
+     path1 =  direc+train_dirc1+'/'+'750/csv'  
+     measure1=loadmeasure(path1)
+
+     path2 =  direc+train_dirc2+'/'+'750/csv'  
+     measure2=loadmeasure(path2)
+
+     path3 =  direc+train_dirc3+'/'+'750/csv'  
      measure3=loadmeasure(path3)
-
-     path4 =  direc+train_dirc2+'/'+'750/csv'  
+     
+     path4 =  direc+train_dirc4+'/'+'750/csv'  
      measure4=loadmeasure(path4)
-     measure_750= np.concatenate((measure3,measure4), axis=0)
-  
+
+     measure_750= np.concatenate((measure1,measure2), axis=0)
+     measure_750= np.concatenate((measure_750,measure3), axis=0)
+     measure_750= np.concatenate((measure_750,measure4), axis=0)
+
 
      #TESTNSET
      #path load GT image
@@ -71,7 +91,7 @@ def load_data(direc):
      testmeasure_750=measure1
      
 
-     measure_750, immatrix= augmentdata(measure_750,immatrix)
+     # measure_750, immatrix= augmentdata(measure_750,immatrix)
 
      X_train_750, y_train = shuffle(measure_750, immatrix, random_state=2) 
 
