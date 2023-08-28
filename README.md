@@ -102,7 +102,7 @@ For evaluation, put all your test measurments in a folder and set it path as an 
 ```bash
 mkdir myoutput
 cd MultiNet
-python3 MultiNet.py  --input testdatadir --outputfolder ../myoutput  --mode test
+python3 MultiNet.py  --datasetdirectory testdatadir --outputfolder ../myoutput  --mode test
 ```
 
 The results will be saved output in `myoutput`. 
